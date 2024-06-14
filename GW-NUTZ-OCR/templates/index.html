@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search by BIB Number</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+</head>
+
+<body>
+    <button>
+        <a href="/upload">go to upload page</a>
+    </button>
+    <div class="container">
+        <h1>Search by BIB number</h1>
+        <div class="search-container">
+            <form method="post" action="/search">
+                <label for="bib-input"></label><input type="text" name="bib_number" placeholder="Enter BIB no..."
+                    id="bib-input">
+                <button type="submit" id="search-button">SEARCH</button>
+            </form>
+            <form action="#">
+                <input class="down" type="button" id="download-button" value="Download">
+            </form>
+        </div>
+        {% if message %}
+        <p>{{ message }}</p>
+        {% endif %}
+        <div class="image-gallery">
+            {% for img in images %}
+            <img src="{{img}}" alt="Image" class="gallery-image">
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const images = document.querySelectorAll('.gallery-image');
+            const downloadButton = document.getElementById('download-button');
+
+            let selectedImages = [];
+
+            images.forEach(image => {
+                image.addEventListener('click', function () {
+                    if (this.classList.contains('highlighted')) {
+                        this.classList.remove('highlighted');
+                        selectedImages = selectedImages.filter(img => img !== this.src);
+                    } else {
+                        this.classList.add('highlighted');
+                        selectedImages.push(this.src);
+                    }
+                });
+            });
+
+            downloadButton.addEventListener('click', function () {
+                if (selectedImages.length === 0) {
+                    alert("Please select images to download.");
+                    return;
+                }
+
+                fetch('/download', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ urls: selectedImages })
+                })
+                    .then(response => {
+                        if (selectedImages.length === 1) {
+                            return response.blob().then(blob => {
+                                const url = window.URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.style.display = 'none';
+                                a.href = url;
+                                a.download = 'image.png';
+                                document.body.appendChild(a);
+                                a.click();
+                                window.URL.revokeObjectURL(url);
+                            });
+                        } else {
+                            return response.blob().then(blob => {
+                                const url = window.URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.style.display = 'none';
+                                a.href = url;
+                                a.download = 'images.zip';
+                                document.body.appendChild(a);
+                                a.click();
+                                window.URL.revokeObjectURL(url);
+                            });
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        });
+    </script>
+</body>
+
+</html>

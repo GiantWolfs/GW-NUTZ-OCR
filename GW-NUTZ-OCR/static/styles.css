@@ -1,0 +1,82 @@
+body {
+    background-color: #080707;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.search-container {
+    margin-bottom: 30px;
+}
+
+#bib-input {
+    padding: 10px;
+    font-size: 1em;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+}
+
+#search-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    background-color: #151111;
+    color: #cecaca;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+#search-button:hover {
+    background-color: #555;
+}
+
+.image-gallery {
+    display: grid;
+    max-height: 400px;
+    overflow-y: auto;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 10px;
+    max-width: 900px;
+}
+
+.image-gallery img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.search-container{
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.down{
+    margin: 5px;
+    padding: 10px;
+    font-size: 20px;
+    background-color: green;
+    border: none;
+    color: white;
+    border-radius: 10px;
+}
+.highlighted {
+    border: 5px solid rgb(52, 186, 130);
+}

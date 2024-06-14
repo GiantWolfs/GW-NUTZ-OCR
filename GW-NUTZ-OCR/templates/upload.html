@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Multiple Images</title>
+    <script>
+        function startTraining() {
+            document.getElementById('status').innerText = 'Training started...';
+            fetch('/train', {
+                method: 'POST'
+            }).then(response => response.json())
+            .then(data => {
+                if (data.status === 'completed') {
+                    document.getElementById('status').innerText = 'Training completed';
+                }
+            }).catch(error => {
+                document.getElementById('status').innerText = 'Error during training';
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Upload Multiple Images</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="files" multiple>
+        <input type="submit" value="Upload">
+    </form><br>
+    <form onsubmit="startTraining(); return false;">
+        <input type="submit" value="TRAIN">
+    </form><br>
+    <p id="status"></p>
+    <button>
+        <a href="/">Go to search page</a>
+    </button>
+</body>
+</html>
